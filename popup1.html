@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess the Picture - Popup</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            height: 100vh;
+        }
+        .column {
+            width: 100%;
+            text-align: center;
+        }
+        #image-popup {
+            max-width: 400px;
+            height: 400px;
+            object-fit: contain;
+        }
+        #player1-timer, #player2-timer {
+            font-size: 200px;
+        }
+        #game-status {
+            display: none; /* Initially hidden */
+        }
+        .timer-red {
+            color: red;
+        }
+        #answer-popup {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+        #game-over-message {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+    </style>
+</head>
+<body>
+    <div class="column">
+        <h2>Player 1 Timer</h2>
+        <p id="player1-timer">100</p>
+    </div>
+    <div class="column">
+        <h3 id="answer-popup"></h3>
+        <div id="game-status">
+            <h3 id="status-message"></h3>
+            <div id="game-over-message"></div> <!-- Game over message container -->
+        </div>
+        <img id="image-popup" src="" alt="Image to guess" />
+    </div>
+    <div class="column">
+        <h2>Player 2 Timer</h2>
+        <p id="player2-timer">100</p>
+    </div>
+    <script>
+      function updatePopup(data) {
+          document.getElementById("player1-timer").innerText = data.timer1 !== undefined ? data.timer1 : "00";
+          document.getElementById("player2-timer").innerText = data.timer2 !== undefined ? data.timer2 : "00";
+          document.getElementById("image-popup").src = data.imageSrc || "";
+          document.getElementById('status-message').innerText = data.statusMessage || "";
+  
+          if (data.showAnswer) {
+              const answerPopup = document.getElementById('answer-popup');
+              answerPopup.innerText = `Answer: ${data.imageName || "Unknown"}`;
+              answerPopup.style.display = 'block'; // Show the answer
+              // Hide the answer after 1 second
+              setTimeout(() => {
+                  answerPopup.style.display = 'none';
+              }, 1000);
+          }
+          
+          document.getElementById('game-status').style.display = 'block'; // Ensure it's visible
+          
+          // Remove red class from both timers
+          document.getElementById("player1-timer").classList.remove("timer-red");
+          document.getElementById("player2-timer").classList.remove("timer-red");
+          
+          // Apply red class to the current player's timer
+          if (data.currentPlayer === 1) {
+              document.getElementById("player1-timer").classList.add("timer-red");
+          } else if (data.currentPlayer === 2) {
+              document.getElementById("player2-timer").classList.add("timer-red");
+          }
+      }
+      
+      window.addEventListener("message", function (event) {
+          if (event.origin === window.location.origin) {
+              updatePopup(event.data);
+          }
+      });
+  </script>
+  
+</body>
+</html>
