@@ -843,7 +843,7 @@ function handleSkip() {
   setTimeout(() => {
     currentImageIndex = (currentImageIndex + 1) % images.length;
     document.getElementById("image").src = images[currentImageIndex].src;
-
+    document.getElementById("answer").innerText = images[currentImageIndex].name; // Show correct answer
     // Resume the timer for the current player
     resumeTimer(currentPlayer);
   }, 1000); // Delay before updating image and resuming the timer

@@ -252,7 +252,6 @@ function handleSkip() {
     timer1,
     timer2,
     imageSrc: images[currentImageIndex].src,
-    imageName: images[currentImageIndex].name, // Ensure this is sent
     statusMessage: `Skipped! Player ${currentPlayer}'s Turn Continues.`,
     currentPlayer,
     showAnswer: true, // Indicate that the answer should be shown
